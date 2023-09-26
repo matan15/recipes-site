@@ -1,0 +1,72 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model Recipe {
+  id           Int                @id @default(autoincrement())
+  userId       String
+  title        String             @db.Text
+  description  String?            @db.Text
+  ingredients  RecipeIngredient[]
+  instructions String?            @db.Text
+  time         Int?
+  difficulty   Float?
+  imageUrl     String?            @db.Text
+  isPublish    Boolean            @default(false)
+
+  categoryId Int?
+  category   Category? @relation(fields: [categoryId], references: [id])
+
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  Ingredient Ingredient[]
+
+  @@index([categoryId])
+}
+
+model RecipeIngredient {
+  id           Int        @id @default(autoincrement())
+  recipeId     Int
+  ingredientId Int
+  amount       String // Amount or quantity of the ingredient in the recipe
+  recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([recipeId, ingredientId])
+}
+
+model Category {
+  id      Int      @id @default(autoincrement())
+  name    String   @unique
+  recipes Recipe[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Ingredient {
+  id     Int    @id @default(autoincrement())
+  name   String
+  amount Float
+
+  recipeId Int
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  RecipeIngredient RecipeIngredient[]
+
+  @@index([recipeId])
+}
