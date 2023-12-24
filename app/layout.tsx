@@ -7,7 +7,7 @@ import { ToastProvider } from "@/components/providers/toaster-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-    title: "Cook&Eat | Homepage",
+    title: "Cook&Eat",
     description: "אתר Cook&Eat נוצר על מנת שמשתמשים יוכלו ליצור מתכונים ולשתף אותם עם אנשים אחרים.",
 };
 

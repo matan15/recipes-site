@@ -26,7 +26,7 @@ export async function POST(
             },
         }, {
           headers: {
-            "Authorization": "Bearer pk_test_2X0W81XWCN4DDDM9BBP04DQN9FDW"
+            "Authorization": "Bearer " + process.env.SEND_EMAIL_API_KEY
           }
         });
         if (response.status) {
