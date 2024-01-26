@@ -4,7 +4,8 @@ const nextConfig = {
         domains: [
             "utfs.io"
         ]
-    }
+    },
+    output: "export"
 }
 
 module.exports = nextConfig
